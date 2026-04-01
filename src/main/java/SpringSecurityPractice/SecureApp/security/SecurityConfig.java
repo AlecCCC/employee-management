@@ -37,8 +37,15 @@ public class SecurityConfig {
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
         http.csrf(csrf -> csrf.disable())
-                .httpBasic(Customizer.withDefaults())
+           //     .httpBasic(Customizer.withDefaults())
+                .formLogin(Customizer.withDefaults())
+                .logout(logout -> logout
+                        .logoutUrl("/security-practice/logout")
+                        .logoutSuccessUrl("/security-practice/hello")
+                )
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/security-practice/hello").permitAll()
+                        .requestMatchers("/security-practice/account").authenticated()
                         .anyRequest().authenticated()
                 );
 
