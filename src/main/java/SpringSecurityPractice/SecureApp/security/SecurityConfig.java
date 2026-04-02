@@ -44,8 +44,8 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/security-practice/hello")
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/security-practice/hello").permitAll()
-                        .requestMatchers("/security-practice/account").authenticated()
+//                        .requestMatchers("/security-practice/hello").permitAll()
+//                        .requestMatchers("/security-practice/account").authenticated()
                         .anyRequest().authenticated()
                 );
 
