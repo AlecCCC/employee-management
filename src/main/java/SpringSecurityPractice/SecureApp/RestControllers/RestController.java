@@ -13,13 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RestController {
 
     @GetMapping("/hello")
-    public String helloEndpoint() {
-
-        return "Hello Stranger!";
-    }
-
-    @GetMapping("/account")
-    public String accountEndpoint(@AuthenticationPrincipal UserDetails user) {
+    public String helloEndpoint(@AuthenticationPrincipal UserDetails user, @RequestParam(required = false) String name) {
 
         if (user == null) {
             return "Hello Guest" ;
