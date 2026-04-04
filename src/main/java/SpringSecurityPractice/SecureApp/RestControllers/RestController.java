@@ -1,7 +1,7 @@
 package SpringSecurityPractice.SecureApp.RestControllers;
 
 import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
-import SpringSecurityPractice.SecureApp.security.UserService;
+import SpringSecurityPractice.SecureApp.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

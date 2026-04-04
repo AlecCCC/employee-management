@@ -1,4 +1,4 @@
-package SpringSecurityPractice.SecureApp.security;
+package SpringSecurityPractice.SecureApp.service;
 
 import SpringSecurityPractice.SecureApp.entity.Employee;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
