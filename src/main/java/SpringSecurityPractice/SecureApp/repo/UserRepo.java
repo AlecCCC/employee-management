@@ -1,11 +1,13 @@
-package SpringSecurityPractice.repo;
+package SpringSecurityPractice.SecureApp.repo;
 
-import SpringSecurityPractice.entity.Employee;
+import SpringSecurityPractice.SecureApp.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 
 import java.util.Optional;
 
+@Repository
 public interface UserRepo extends JpaRepository<Employee, Long> {
 
     Optional<Employee> findByUsername(String username);

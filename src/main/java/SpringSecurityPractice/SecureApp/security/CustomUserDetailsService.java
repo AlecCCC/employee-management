@@ -1,7 +1,7 @@
 package SpringSecurityPractice.SecureApp.security;
 
-import SpringSecurityPractice.entity.Employee;
-import SpringSecurityPractice.repo.UserRepo;
+import SpringSecurityPractice.SecureApp.entity.Employee;
+import SpringSecurityPractice.SecureApp.repo.UserRepo;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
