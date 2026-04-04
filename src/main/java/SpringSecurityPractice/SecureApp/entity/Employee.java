@@ -1,4 +1,4 @@
-package SpringSecurityPractice.entity;
+package SpringSecurityPractice.SecureApp.entity;
 
 import jakarta.persistence.*;
 
