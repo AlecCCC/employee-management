@@ -1,4 +1,4 @@
-package SpringSecurityPractice.SecureApp.security;
+package SpringSecurityPractice.SecureApp.entity.requestEntity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

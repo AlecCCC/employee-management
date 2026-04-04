@@ -1,6 +1,7 @@
 package SpringSecurityPractice.SecureApp.security;
 
 import SpringSecurityPractice.SecureApp.entity.Employee;
+import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
 import SpringSecurityPractice.SecureApp.repo.UserRepo;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

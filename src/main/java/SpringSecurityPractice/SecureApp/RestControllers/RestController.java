@@ -1,6 +1,6 @@
 package SpringSecurityPractice.SecureApp.RestControllers;
 
-import SpringSecurityPractice.SecureApp.security.RegisterRequest;
+import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
 import SpringSecurityPractice.SecureApp.security.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,7 +18,7 @@ public class RestController {
     }
 
     @GetMapping("/hello")
-    public String helloEndpoint(@AuthenticationPrincipal UserDetails user, @RequestParam(required = false) String name) {
+    public String helloEndpoint(@AuthenticationPrincipal UserDetails user) {
         if (user == null) {
             return "Hello Guest";
         }
