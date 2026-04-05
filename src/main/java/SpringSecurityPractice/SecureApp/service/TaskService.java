@@ -3,9 +3,12 @@ package SpringSecurityPractice.SecureApp.service;
 import SpringSecurityPractice.SecureApp.entity.Employee;
 import SpringSecurityPractice.SecureApp.entity.Task;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.TaskRequest;
+import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
 import SpringSecurityPractice.SecureApp.repo.TaskRepo;
 import SpringSecurityPractice.SecureApp.repo.UserRepo;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TaskService {
@@ -30,12 +33,16 @@ public class TaskService {
         task.setDescription(taskRequest.getDescription());
         task.setAssigned_to(assigned_to);
         task.setAssigned_by(assigned_by);
-        task.setDue_date(taskRequest.getDueDate());
+        task.setDueDate(taskRequest.getDueDate());
         task.setStatus(taskRequest.getStatus());
 
 
         return taskRepo.save(task);
 
+    }
+
+    public List<TaskResponse> findTasksWithUsernames() {
+        return taskRepo.findAllTasksWithUsernames();
     }
 
 }

@@ -18,7 +18,7 @@ public class Task {
     private String status;
 
     @Column(name = "due_date")
-    private LocalDate due_date;
+    private LocalDate dueDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_to", nullable = false)
@@ -55,12 +55,12 @@ public class Task {
         this.status = status;
     }
 
-    public LocalDate getDue_date() {
-        return due_date;
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
-    public void setDue_date(LocalDate due_date) {
-        this.due_date = due_date;
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 
     public Employee getAssigned_to() {
