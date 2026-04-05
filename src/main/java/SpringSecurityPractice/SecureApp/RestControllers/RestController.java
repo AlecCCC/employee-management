@@ -1,6 +1,9 @@
 package SpringSecurityPractice.SecureApp.RestControllers;
 
+import SpringSecurityPractice.SecureApp.entity.Task;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
+import SpringSecurityPractice.SecureApp.entity.requestEntity.TaskRequest;
+import SpringSecurityPractice.SecureApp.service.TaskService;
 import SpringSecurityPractice.SecureApp.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class RestController {
 
     private final UserService userService;
+    private final TaskService taskService;
 
     public RestController(UserService userService) {
         this.userService = userService;
@@ -29,6 +33,11 @@ public class RestController {
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
         userService.registerUser(request);
         return ResponseEntity.ok("User registered successfully");
+    }
+
+    @PostMapping("/task")
+    public ResponseEntity<String> saveTask(@RequestBody TaskRequest request) {
+
     }
 
 }
