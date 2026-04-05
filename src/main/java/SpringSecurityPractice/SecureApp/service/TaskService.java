@@ -13,6 +13,10 @@ public class TaskService {
     private TaskRepo taskRepo;
     private UserRepo userRepo;
 
+    public TaskService(TaskRepo taskRepo, UserRepo userRepo) {
+        this.taskRepo = taskRepo;
+        this.userRepo = userRepo;
+    }
 
     public Task createTask(TaskRequest taskRequest) {
 
@@ -27,6 +31,7 @@ public class TaskService {
         task.setAssigned_to(assigned_to);
         task.setAssigned_by(assigned_by);
         task.setDue_date(taskRequest.getDueDate());
+        task.setStatus(taskRequest.getStatus());
 
 
         return taskRepo.save(task);

@@ -5,6 +5,7 @@ import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.TaskRequest;
 import SpringSecurityPractice.SecureApp.service.TaskService;
 import SpringSecurityPractice.SecureApp.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +18,9 @@ public class RestController {
     private final UserService userService;
     private final TaskService taskService;
 
-    public RestController(UserService userService) {
+    public RestController(UserService userService, TaskService taskService) {
         this.userService = userService;
+        this.taskService = taskService;
     }
 
     @GetMapping("/hello")
@@ -36,7 +38,10 @@ public class RestController {
     }
 
     @PostMapping("/task")
-    public ResponseEntity<String> saveTask(@RequestBody TaskRequest request) {
+    public ResponseEntity<Task> saveTask(@RequestBody TaskRequest request) {
+        Task task = taskService.createTask(request);
+        return ResponseEntity.ok(task);
+
 
     }
 

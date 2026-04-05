@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/security-practice/register").permitAll()
+                        .requestMatchers("/security-practice/task").permitAll()
                         .requestMatchers("/security-practice/hello").authenticated()
                         .anyRequest().permitAll()
                 );
