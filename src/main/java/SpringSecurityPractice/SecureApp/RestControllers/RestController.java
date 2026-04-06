@@ -1,5 +1,6 @@
 package SpringSecurityPractice.SecureApp.RestControllers;
 
+import SpringSecurityPractice.SecureApp.entity.Employee;
 import SpringSecurityPractice.SecureApp.entity.Task;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.TaskRequest;
@@ -55,11 +56,17 @@ public class RestController {
        return ResponseEntity.ok(tasks);
     }
 
-    @GetMapping("/task/{id}")
-    public ResponseEntity<EmployeeResponse> getEmployee(@PathVariable Long id) {
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<EmployeeResponse> getEmployee(@PathVariable Long id,
+                                                        @AuthenticationPrincipal UserDetails userDetails) {
+
+        Employee loggedInEmployee = userService.findByUsername(userDetails.getUsername());
+
+        if (!loggedInEmployee.getId().equals(id)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         EmployeeResponse employeeResponse = userService.getEmployeeWithTask(id);
-
         return ResponseEntity.ok(employeeResponse);
     }
 

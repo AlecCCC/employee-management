@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/security-practice/register").permitAll()
                         .requestMatchers("/security-practice/task").permitAll()
                         .requestMatchers("/security-practice/hello").authenticated()
+                        .requestMatchers("/security-practice/employee/{id}").authenticated()
                         .anyRequest().permitAll()
                 );
         return http.build();

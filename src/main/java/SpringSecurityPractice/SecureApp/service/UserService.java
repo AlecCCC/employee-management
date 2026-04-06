@@ -52,5 +52,9 @@ public class UserService {
 
     }
 
+    public Employee findByUsername(String username) {
+        return userRepo.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+    }
 
 }
