@@ -32,9 +32,9 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/security-practice/register").permitAll()
-                        .requestMatchers("/security-practice/task").permitAll()
+                        .requestMatchers("/security-practice/task").hasAuthority("ADMIN")
                         .requestMatchers("/security-practice/hello").authenticated()
-                        .requestMatchers("/security-practice/employee/{id}").authenticated()
+                        .requestMatchers("/security-practice/employees/{id}").authenticated()
                         .anyRequest().permitAll()
                 );
         return http.build();

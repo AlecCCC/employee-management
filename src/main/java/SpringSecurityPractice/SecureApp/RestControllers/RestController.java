@@ -50,21 +50,35 @@ public class RestController {
     }
 
     @GetMapping("/task")
-    public ResponseEntity<List<TaskResponse>> getTasksWithUsernames() {
+    public ResponseEntity<List<TaskResponse>> getTasksWithUsernames(@AuthenticationPrincipal UserDetails userDetails) {
        List<TaskResponse> tasks = taskService.findTasksWithUsernames();
+
+       Employee loggedInEmployee = userService.findByUsername(userDetails.getUsername());
+
+       if (!loggedInEmployee.getAuthority().equals("ADMIN")) {
+
+           return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+       }
 
        return ResponseEntity.ok(tasks);
     }
 
-    @GetMapping("/employee/{id}")
+    @GetMapping("/employees/{id}")
     public ResponseEntity<EmployeeResponse> getEmployee(@PathVariable Long id,
                                                         @AuthenticationPrincipal UserDetails userDetails) {
 
         Employee loggedInEmployee = userService.findByUsername(userDetails.getUsername());
 
-        if (!loggedInEmployee.getId().equals(id)) {
+        String authority = loggedInEmployee.getAuthority();
+        boolean isAdmin = authority.equals("ADMIN");
+
+        boolean isOwnData = loggedInEmployee.getId().equals(id);
+
+        if (!isAdmin && !isOwnData) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+
 
         EmployeeResponse employeeResponse = userService.getEmployeeWithTask(id);
         return ResponseEntity.ok(employeeResponse);
