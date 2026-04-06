@@ -3,6 +3,7 @@ package SpringSecurityPractice.SecureApp.RestControllers;
 import SpringSecurityPractice.SecureApp.entity.Task;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.TaskRequest;
+import SpringSecurityPractice.SecureApp.entity.responseEntity.EmployeeResponse;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
 import SpringSecurityPractice.SecureApp.service.TaskService;
 import SpringSecurityPractice.SecureApp.service.UserService;
@@ -52,6 +53,14 @@ public class RestController {
        List<TaskResponse> tasks = taskService.findTasksWithUsernames();
 
        return ResponseEntity.ok(tasks);
+    }
+
+    @GetMapping("/task/{id}")
+    public ResponseEntity<EmployeeResponse> getEmployee(@PathVariable Long id) {
+
+        EmployeeResponse employeeResponse = userService.getEmployeeWithTask(id);
+
+        return ResponseEntity.ok(employeeResponse);
     }
 
 
