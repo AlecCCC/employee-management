@@ -14,8 +14,8 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jtw.expiration}")
-    private String expiration;
+    @Value("${jwt.expiration}")
+    private Long expiration;
 
     private SecretKey getKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
@@ -39,7 +39,7 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    public boolean isTokenvalid(String token) {
+    public boolean isTokenValid(String token) {
         try {
             Jwts.parser()
                     .verifyWith(getKey())

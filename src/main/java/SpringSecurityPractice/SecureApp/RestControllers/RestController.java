@@ -6,10 +6,16 @@ import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.TaskRequest;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.EmployeeResponse;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
+import SpringSecurityPractice.SecureApp.security.Jwt.JwtUtil;
+import SpringSecurityPractice.SecureApp.security.Jwt.dto.LoginRequest;
+import SpringSecurityPractice.SecureApp.security.Jwt.dto.LoginResponse;
 import SpringSecurityPractice.SecureApp.service.TaskService;
 import SpringSecurityPractice.SecureApp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +28,14 @@ public class RestController {
 
     private final UserService userService;
     private final TaskService taskService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    public RestController(UserService userService, TaskService taskService) {
+    public RestController(UserService userService, TaskService taskService, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.userService = userService;
         this.taskService = taskService;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/hello")
@@ -82,6 +92,24 @@ public class RestController {
 
         EmployeeResponse employeeResponse = userService.getEmployeeWithTask(id);
         return ResponseEntity.ok(employeeResponse);
+    }
+
+    /// JWT Auth ///
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
+
+        String token = jwtUtil.generateToken(request.getUsername());
+
+        return ResponseEntity.ok(new LoginResponse(token));
+
     }
 
 
