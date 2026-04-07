@@ -62,6 +62,7 @@ public class SecurityConfig {
                         .requestMatchers("/security-practice/register").permitAll()
                         .requestMatchers("/security-practice/login").permitAll()
                         .requestMatchers("/security-practice/task").hasAuthority("ADMIN")
+                        .requestMatchers("/security-practice/task/{id}").authenticated()
                         .requestMatchers("/security-practice/hello").authenticated()
                         .requestMatchers("/security-practice/employees").hasAuthority("ADMIN")
                         .requestMatchers("/security-practice/employees/{id}").authenticated()
