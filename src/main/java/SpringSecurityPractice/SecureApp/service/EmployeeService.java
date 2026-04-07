@@ -49,6 +49,8 @@ public class EmployeeService {
         List<EmployeeResponse> processedEmployees = new ArrayList<>();
 
         for (Employee tempEmployee: employees) {
+
+            List<TaskResponse> tasks = taskRepo.findTasksAssignedToById(tempEmployee.getId());
             EmployeeResponse employee = new EmployeeResponse(
                     tempEmployee.getId(),
                     tempEmployee.getUsername(),
@@ -56,7 +58,7 @@ public class EmployeeService {
                     tempEmployee.getFirstName(),
                     tempEmployee.getLastName(),
                     tempEmployee.getEmail(),
-                    null
+                    tasks
             );
             processedEmployees.add(employee);
         }

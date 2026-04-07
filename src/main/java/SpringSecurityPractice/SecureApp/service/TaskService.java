@@ -41,8 +41,21 @@ public class TaskService {
 
     }
 
+    public Task findTaskById(Long id) {
+        return taskRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+    }
+
     public List<TaskResponse> findTasksWithUsernames() {
         return taskRepo.findAllTasksWithUsernames();
+    }
+
+    public boolean deleteById(long id) {
+        if (taskRepo.existsById(id)) {
+            taskRepo.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
 
