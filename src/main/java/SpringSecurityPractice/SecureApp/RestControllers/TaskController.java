@@ -1,0 +1,53 @@
+package SpringSecurityPractice.SecureApp.RestControllers;
+
+import SpringSecurityPractice.SecureApp.entity.Employee;
+import SpringSecurityPractice.SecureApp.entity.Task;
+import SpringSecurityPractice.SecureApp.entity.requestEntity.TaskRequest;
+import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
+import SpringSecurityPractice.SecureApp.service.TaskService;
+import SpringSecurityPractice.SecureApp.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/security-practice")
+public class TaskController {
+
+    private TaskService taskService;
+    private UserService userService;
+
+    public TaskController(TaskService taskService, UserService userService) {
+        this.taskService = taskService;
+        this.userService = userService;
+    }
+
+
+    @PostMapping("/task")
+    public ResponseEntity<Task> saveTask(@RequestBody TaskRequest request) {
+        Task task = taskService.createTask(request);
+        return ResponseEntity.ok(task);
+
+    }
+
+    @GetMapping("/task")
+    public ResponseEntity<List<TaskResponse>> getTasksWithUsernames(@AuthenticationPrincipal UserDetails userDetails) {
+        List<TaskResponse> tasks = taskService.findTasksWithUsernames();
+
+        Employee loggedInEmployee = userService.findByUsername(userDetails.getUsername());
+
+        if (!loggedInEmployee.getAuthority().equals("ADMIN")) {
+
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        }
+
+        return ResponseEntity.ok(tasks);
+    }
+
+}

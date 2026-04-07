@@ -28,7 +28,7 @@ public class UserService {
         Employee employee = new Employee();
         employee.setUsername(request.getUsername());
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
-        employee.setAuthority(request.getAuthority());
+        employee.setAuthority("USER");
         employee.setFirstName(request.getFirstName());
         employee.setLastName(request.getLastName());
         employee.setEmail(request.getEmail());

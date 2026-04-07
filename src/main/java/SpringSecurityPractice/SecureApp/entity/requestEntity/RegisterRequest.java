@@ -19,11 +19,9 @@ public class RegisterRequest {
     public String getAuthority() { return authority; }
     public void setAuthority(String authority) { this.authority = authority; }
 
-    @JsonProperty("first_name")
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
 
-    @JsonProperty("last_name")
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
 
