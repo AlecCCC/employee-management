@@ -13,15 +13,19 @@ public class EmployeeResponse {
     private String authority;
     private String firstName;
     private String lastName;
+    private String email;
+
 
     private List<TaskResponse> assignedTasks;
 
-    public EmployeeResponse(Long id, String username, String authority, String firstName, String lastName, List<TaskResponse> assignedTasks) {
+    public EmployeeResponse(Long id, String username, String authority, String firstName,
+                            String lastName, String email, List<TaskResponse> assignedTasks) {
         this.id = id;
         this.username = username;
         this.authority = authority;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;  // ← add this
         this.assignedTasks = assignedTasks;
     }
 
@@ -47,5 +51,9 @@ public class EmployeeResponse {
 
     public List<TaskResponse> getAssignedTasks() {
         return assignedTasks;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

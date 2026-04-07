@@ -47,6 +47,7 @@ public class UserService {
                 employee.getAuthority(),
                 employee.getFirstName(),
                 employee.getLastName(),
+                employee.getEmail(),
                 tasks
         );
 

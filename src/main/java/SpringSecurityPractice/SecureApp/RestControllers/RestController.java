@@ -106,9 +106,10 @@ public class RestController {
                 )
         );
 
+        Employee employee = userService.findByUsername(request.getUsername());
         String token = jwtUtil.generateToken(request.getUsername());
 
-        return ResponseEntity.ok(new LoginResponse(token));
+        return ResponseEntity.ok(new LoginResponse(token, request.getUsername(), employee.getId(), employee.getAuthority()));
 
     }
 
