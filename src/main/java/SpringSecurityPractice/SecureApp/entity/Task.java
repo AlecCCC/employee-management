@@ -78,4 +78,10 @@ public class Task {
     public void setAssigned_by(Employee assigned_by) {
         this.assigned_by = assigned_by;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+
 }

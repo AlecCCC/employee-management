@@ -50,6 +50,23 @@ public class TaskController {
         return ResponseEntity.ok(tasks);
     }
 
+    @GetMapping("/task/{id}")
+    public ResponseEntity<TaskResponse> getTaskById(@PathVariable Long id,
+                                                    @AuthenticationPrincipal UserDetails userDetails) {
+
+        Employee loggedInEmployee = employeeService.findByUsername(userDetails.getUsername());
+        TaskResponse task = taskService.getTaskById(id);
+
+        boolean isAdmin = loggedInEmployee.getAuthority().equals("ADMIN");
+        boolean isAssigned = task.getAssignedToUsername().equals(loggedInEmployee.getUsername());
+
+        if (!isAdmin && !isAssigned) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.ok(task);
+
+    }
+
     @DeleteMapping("/task/{id}")
     public ResponseEntity<String> deleteTaskById(@PathVariable Long id) {
         taskService.deleteById(id);

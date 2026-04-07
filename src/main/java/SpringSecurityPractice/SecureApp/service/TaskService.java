@@ -41,10 +41,6 @@ public class TaskService {
 
     }
 
-    public Task findTaskById(Long id) {
-        return taskRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
-    }
 
     public List<TaskResponse> findTasksWithUsernames() {
         return taskRepo.findAllTasksWithUsernames();
@@ -57,6 +53,25 @@ public class TaskService {
         }
         return false;
     }
+
+
+    public TaskResponse getTaskById(Long id) {
+        Task task = taskRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        return new TaskResponse(
+                task.getId(),
+                task.getTitle(),
+                task.getDescription(),
+                task.getStatus(),
+                task.getDueDate(),
+                task.getAssigned_to().getUsername(),
+                task.getAssigned_by().getUsername()
+        );
+
+    }
+
+
 
 
 }
