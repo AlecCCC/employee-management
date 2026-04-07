@@ -1,7 +1,7 @@
 package SpringSecurityPractice.SecureApp.security;
 
 import SpringSecurityPractice.SecureApp.entity.Employee;
-import SpringSecurityPractice.SecureApp.repo.UserRepo;
+import SpringSecurityPractice.SecureApp.repo.EmployeeRepo;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-   private UserRepo userRepo;
+   private EmployeeRepo userRepo;
 
-    public CustomUserDetailsService(UserRepo userRepo) {
+    public CustomUserDetailsService(EmployeeRepo userRepo) {
         this.userRepo = userRepo;
     }
 

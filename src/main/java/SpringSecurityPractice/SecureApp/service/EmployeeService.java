@@ -4,24 +4,31 @@ import SpringSecurityPractice.SecureApp.entity.Employee;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.EmployeeResponse;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
+import SpringSecurityPractice.SecureApp.repo.EmployeeRepo;
 import SpringSecurityPractice.SecureApp.repo.TaskRepo;
-import SpringSecurityPractice.SecureApp.repo.UserRepo;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserService {
+public class EmployeeService {
 
-    private final UserRepo userRepo;
+    private final EmployeeRepo userRepo;
     private final TaskRepo taskRepo;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepo userRepo, TaskRepo taskRepo, PasswordEncoder passwordEncoder) {
+    public EmployeeService(EmployeeRepo userRepo, TaskRepo taskRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
         this.taskRepo = taskRepo;
         this.passwordEncoder = passwordEncoder;
+    }
+
+
+    public Employee findByUsername(String username) {
+        return userRepo.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
     public void registerUser(RegisterRequest request) {
@@ -33,6 +40,29 @@ public class UserService {
         employee.setLastName(request.getLastName());
         employee.setEmail(request.getEmail());
         userRepo.save(employee);
+    }
+
+    public List<EmployeeResponse> getEmployees() {
+
+        List<Employee> employees = userRepo.findAll();
+
+        List<EmployeeResponse> processedEmployees = new ArrayList<>();
+
+        for (Employee tempEmployee: employees) {
+            EmployeeResponse employee = new EmployeeResponse(
+                    tempEmployee.getId(),
+                    tempEmployee.getUsername(),
+                    tempEmployee.getAuthority(),
+                    tempEmployee.getFirstName(),
+                    tempEmployee.getLastName(),
+                    tempEmployee.getEmail(),
+                    null
+            );
+            processedEmployees.add(employee);
+        }
+
+        return processedEmployees;
+
     }
 
     public EmployeeResponse getEmployeeWithTask(Long id) {
@@ -51,11 +81,6 @@ public class UserService {
                 tasks
         );
 
-    }
-
-    public Employee findByUsername(String username) {
-        return userRepo.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
 }

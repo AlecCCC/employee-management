@@ -2,7 +2,7 @@ package SpringSecurityPractice.SecureApp.RestControllers;
 
 import SpringSecurityPractice.SecureApp.entity.Employee;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.EmployeeResponse;
-import SpringSecurityPractice.SecureApp.service.UserService;
+import SpringSecurityPractice.SecureApp.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,16 +19,23 @@ import java.util.List;
 
 public class EmployeeController {
 
-    private final UserService userService;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(UserService userService) {
-        this.userService = userService;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @GetMapping("/employees")
+    public ResponseEntity<List<EmployeeResponse>> getEmployees() {
+
+        return ResponseEntity.ok(employeeService.getEmployees());
+
     }
 
     @GetMapping("/employees/{id}")
     public ResponseEntity<EmployeeResponse> getEmployee(@PathVariable Long id,
                                                         @AuthenticationPrincipal UserDetails userDetails) {
-        Employee loggedInEmployee = userService.findByUsername(userDetails.getUsername());
+        Employee loggedInEmployee = employeeService.findByUsername(userDetails.getUsername());
         boolean isAdmin = loggedInEmployee.getAuthority().equals("ADMIN");
         boolean isOwnData = loggedInEmployee.getId().equals(id);
 
@@ -36,7 +43,7 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        return ResponseEntity.ok(userService.getEmployeeWithTask(id));
+        return ResponseEntity.ok(employeeService.getEmployeeWithTask(id));
     }
 
 

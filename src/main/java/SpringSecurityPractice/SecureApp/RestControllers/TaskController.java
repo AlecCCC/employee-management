@@ -5,7 +5,7 @@ import SpringSecurityPractice.SecureApp.entity.Task;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.TaskRequest;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
 import SpringSecurityPractice.SecureApp.service.TaskService;
-import SpringSecurityPractice.SecureApp.service.UserService;
+import SpringSecurityPractice.SecureApp.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,11 +20,11 @@ import java.util.List;
 public class TaskController {
 
     private TaskService taskService;
-    private UserService userService;
+    private EmployeeService employeeService;
 
-    public TaskController(TaskService taskService, UserService userService) {
+    public TaskController(TaskService taskService, EmployeeService employeeService) {
         this.taskService = taskService;
-        this.userService = userService;
+        this.employeeService = employeeService;
     }
 
 
@@ -39,7 +39,7 @@ public class TaskController {
     public ResponseEntity<List<TaskResponse>> getTasksWithUsernames(@AuthenticationPrincipal UserDetails userDetails) {
         List<TaskResponse> tasks = taskService.findTasksWithUsernames();
 
-        Employee loggedInEmployee = userService.findByUsername(userDetails.getUsername());
+        Employee loggedInEmployee = employeeService.findByUsername(userDetails.getUsername());
 
         if (!loggedInEmployee.getAuthority().equals("ADMIN")) {
 

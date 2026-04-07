@@ -5,7 +5,7 @@ import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
 import SpringSecurityPractice.SecureApp.security.Jwt.JwtUtil;
 import SpringSecurityPractice.SecureApp.security.Jwt.dto.LoginRequest;
 import SpringSecurityPractice.SecureApp.security.Jwt.dto.LoginResponse;
-import SpringSecurityPractice.SecureApp.service.UserService;
+import SpringSecurityPractice.SecureApp.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,19 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/security-practice")
 public class AuthController {
 
-    private final UserService userService;
+    private final EmployeeService employeeService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    public AuthController(UserService userService, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
-        this.userService = userService;
+    public AuthController(EmployeeService employeeService, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+        this.employeeService = employeeService;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-        userService.registerUser(request);
+        employeeService.registerUser(request);
         return ResponseEntity.ok("User registered successfully");
     }
 
@@ -45,7 +45,7 @@ public class AuthController {
                 )
         );
 
-        Employee employee = userService.findByUsername(request.getUsername());
+        Employee employee = employeeService.findByUsername(request.getUsername());
         String token = jwtUtil.generateToken(request.getUsername());
 
         return ResponseEntity.ok(new LoginResponse(token, request.getUsername(), employee.getId(), employee.getAuthority()));

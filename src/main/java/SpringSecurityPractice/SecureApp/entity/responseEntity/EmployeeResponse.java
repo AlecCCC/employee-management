@@ -18,6 +18,7 @@ public class EmployeeResponse {
 
     private List<TaskResponse> assignedTasks;
 
+
     public EmployeeResponse(Long id, String username, String authority, String firstName,
                             String lastName, String email, List<TaskResponse> assignedTasks) {
         this.id = id;
@@ -25,9 +26,10 @@ public class EmployeeResponse {
         this.authority = authority;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;  // ← add this
+        this.email = email;
         this.assignedTasks = assignedTasks;
     }
+
 
     public Long getId() {
         return id;
