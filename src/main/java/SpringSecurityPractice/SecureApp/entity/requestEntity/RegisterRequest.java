@@ -1,12 +1,15 @@
 package SpringSecurityPractice.SecureApp.entity.requestEntity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
 
 public class RegisterRequest {
     private String username;
     private String password;
     private String authority;
+    @JsonProperty("first_name")
     private String firstName;
+    @JsonProperty("last_name")
     private String lastName;
     private String email;
 
