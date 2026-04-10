@@ -4,6 +4,7 @@ import SpringSecurityPractice.SecureApp.entity.Employee;
 import SpringSecurityPractice.SecureApp.entity.Task;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.TaskRequest;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
+import SpringSecurityPractice.SecureApp.errorhandle.exceptions.TaskNotFoundException;
 import SpringSecurityPractice.SecureApp.repo.TaskRepo;
 import SpringSecurityPractice.SecureApp.repo.EmployeeRepo;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,7 @@ public class TaskService {
 
     public TaskResponse getTaskById(Long id) {
         Task task = taskRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(()-> new TaskNotFoundException(id));
 
         return new TaskResponse(
                 task.getId(),
