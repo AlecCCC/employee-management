@@ -9,9 +9,10 @@ import jakarta.validation.constraints.Size;
 
 public class RegisterRequest {
     @NotEmpty(message = "Username Required")
-//    @Size(min = 3, max = 15)
+    @Size(min = 3, max = 15, message = "Username must be 3 to 15 characters max")
     private String username;
     @NotEmpty(message = "Password Required")
+    @Size(min=5, max=20, message = "Password must be 5 to 20 characters max")
     private String password;
     private String authority;
     @NotBlank(message="First name required")
