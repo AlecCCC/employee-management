@@ -4,6 +4,8 @@ import SpringSecurityPractice.SecureApp.entity.Employee;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.EmployeeResponse;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
+import SpringSecurityPractice.SecureApp.errorhandle.exceptions.EmailExistsException;
+import SpringSecurityPractice.SecureApp.errorhandle.exceptions.UsernameExistsException;
 import SpringSecurityPractice.SecureApp.repo.EmployeeRepo;
 import SpringSecurityPractice.SecureApp.repo.TaskRepo;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,13 +27,22 @@ public class EmployeeService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     public Employee findByUsername(String username) {
         return userRepo.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
     public void registerUser(RegisterRequest request) {
+
+        if (userRepo.existsByEmail(request.getEmail())) {
+            throw new EmailExistsException(request.getEmail());
+        }
+
+        if (userRepo.existsByUsername(request.getUsername())) {
+            throw new UsernameExistsException(request.getUsername());
+        }
+
+
         Employee employee = new Employee();
         employee.setUsername(request.getUsername());
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
