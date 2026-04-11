@@ -6,6 +6,7 @@ import SpringSecurityPractice.SecureApp.security.Jwt.JwtUtil;
 import SpringSecurityPractice.SecureApp.security.Jwt.dto.LoginRequest;
 import SpringSecurityPractice.SecureApp.security.Jwt.dto.LoginResponse;
 import SpringSecurityPractice.SecureApp.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +31,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
         employeeService.registerUser(request);
         return ResponseEntity.ok("User registered successfully");
     }

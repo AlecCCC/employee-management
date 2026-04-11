@@ -2,13 +2,25 @@ package SpringSecurityPractice.SecureApp.entity.requestEntity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 public class RegisterRequest {
+    @NotEmpty(message = "Username Required")
+//    @Size(min = 3, max = 15)
     private String username;
+    @NotEmpty(message = "Password Required")
     private String password;
     private String authority;
+    @NotBlank(message="First name required")
     private String firstName;
+    @NotBlank(message="Last name required")
+
     private String lastName;
+    @NotBlank(message = "Email Required")
+    @Email(message = "Not formatted correctly")
     private String email;
 
     public String getUsername() { return username; }
