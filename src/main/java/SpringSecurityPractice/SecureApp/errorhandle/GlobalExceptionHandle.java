@@ -1,6 +1,8 @@
 package SpringSecurityPractice.SecureApp.errorhandle;
 
+import SpringSecurityPractice.SecureApp.errorhandle.exceptions.EmailExistsException;
 import SpringSecurityPractice.SecureApp.errorhandle.exceptions.TaskNotFoundException;
+import SpringSecurityPractice.SecureApp.errorhandle.exceptions.UsernameExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -15,10 +17,25 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandle {
 
+
     @ExceptionHandler(TaskNotFoundException.class)
     public ResponseEntity<ErrorDetails> handleTaskNotFoundException(TaskNotFoundException taskNotFoundException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDetails(404, "Not Found", taskNotFoundException.getMessage()));
     }
+
+    @ExceptionHandler(UsernameExistsException.class)
+    public ResponseEntity<ErrorDetails> handleUsernameExistsException(UsernameExistsException usernameExistsException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDetails(409, "Conflict", usernameExistsException.getMessage()));
+    }
+
+    @ExceptionHandler(EmailExistsException.class)
+    public ResponseEntity<ErrorDetails> handleEmailExistsException(EmailExistsException emailExistsException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDetails(409, "Conflict", emailExistsException.getMessage()));
+    }
+
+
+
+    /// ENTITY ERRORS
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
