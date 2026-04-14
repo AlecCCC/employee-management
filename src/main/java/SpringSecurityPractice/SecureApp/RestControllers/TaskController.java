@@ -6,6 +6,7 @@ import SpringSecurityPractice.SecureApp.entity.requestEntity.TaskRequest;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
 import SpringSecurityPractice.SecureApp.service.TaskService;
 import SpringSecurityPractice.SecureApp.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -74,7 +75,7 @@ public class TaskController {
     }
 
     @PutMapping("/task/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody TaskRequest taskRequest
+    public ResponseEntity<Task> updateTask(@Valid @PathVariable Long id, @RequestBody TaskRequest taskRequest
     , @AuthenticationPrincipal UserDetails userDetails) {
         Employee loggedInEmployee = employeeService.findByUsername(userDetails.getUsername());
 

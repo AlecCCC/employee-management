@@ -1,15 +1,24 @@
 package SpringSecurityPractice.SecureApp.entity.requestEntity;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
 public class TaskRequest {
 
 
+    @NotBlank(message = "title is required")
     private String title;
+    @NotBlank(message = "description is required")
     private String description;
+    @NotNull(message = "status is required")
     private String status;
+    @NotNull(message = "dueDate is required")
     private LocalDate dueDate;
+    @NotNull(message = "assignedTo is required")
     private Long assignedTo;
+    @NotNull(message = "assignedBy is required")
     private Long assignedBy;
 
     public TaskRequest() {
