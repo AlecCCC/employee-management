@@ -72,7 +72,42 @@ public class TaskService {
 
     }
 
+    public Task updateTask(Long id, TaskRequest taskRequest) {
 
+        Task task = taskRepo.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
 
+        if (taskRequest.getTitle() == null || taskRequest.getTitle().isBlank()) {
+            throw new IllegalArgumentException("title is required");
+        }
+        if (taskRequest.getDescription() == null) {
+            throw new IllegalArgumentException("description is required");
+        }
+        if (taskRequest.getStatus() == null) {
+            throw new IllegalArgumentException("status is required");
+        }
+        if (taskRequest.getDueDate() == null) {
+            throw new IllegalArgumentException("dueDate is required");
+        }
+        if (taskRequest.getAssignedBy() == null) {
+            throw new IllegalArgumentException("assignedBy is required");
+        }
+        if (taskRequest.getAssignedTo() == null) {
+            throw new IllegalArgumentException("assignedTo is required");
+        }
 
+        Employee assignedBy = userRepo.findById(taskRequest.getAssignedBy())
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        Employee assignedTo = userRepo.findById(taskRequest.getAssignedTo())
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        task.setTitle(taskRequest.getTitle());
+        task.setDescription(taskRequest.getDescription());
+        task.setStatus(taskRequest.getStatus());
+        task.setDueDate(taskRequest.getDueDate());
+        task.setAssigned_by(assignedBy);
+        task.setAssigned_to(assignedTo);
+
+        return taskRepo.save(task);
+    }
 }

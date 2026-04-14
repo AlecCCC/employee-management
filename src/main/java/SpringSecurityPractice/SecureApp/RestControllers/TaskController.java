@@ -73,4 +73,18 @@ public class TaskController {
         return ResponseEntity.ok("Task with id " + id + " was deleted");
     }
 
+    @PutMapping("/task/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody TaskRequest taskRequest
+    , @AuthenticationPrincipal UserDetails userDetails) {
+        Employee loggedInEmployee = employeeService.findByUsername(userDetails.getUsername());
+
+        if (!loggedInEmployee.getAuthority().equals("ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        Task updatedTask = taskService.updateTask(id, taskRequest);
+        return ResponseEntity.ok(updatedTask);
+
+    }
+
 }
