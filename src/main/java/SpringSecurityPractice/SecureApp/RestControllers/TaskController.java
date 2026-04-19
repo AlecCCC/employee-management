@@ -7,6 +7,8 @@ import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
 import SpringSecurityPractice.SecureApp.service.TaskService;
 import SpringSecurityPractice.SecureApp.service.EmployeeService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,8 +39,10 @@ public class TaskController {
     }
 
     @GetMapping("/task")
-    public ResponseEntity<List<TaskResponse>> getTasksWithUsernames(@AuthenticationPrincipal UserDetails userDetails) {
-        List<TaskResponse> tasks = taskService.findTasksWithUsernames();
+    public ResponseEntity<Page<TaskResponse>> getTasksWithUsernames(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size) {
 
         Employee loggedInEmployee = employeeService.findByUsername(userDetails.getUsername());
 
@@ -48,7 +52,7 @@ public class TaskController {
 
         }
 
-        return ResponseEntity.ok(tasks);
+        return ResponseEntity.ok(taskService.findTasksWithUsernames(page, size));
     }
 
     @GetMapping("/task/{id}")

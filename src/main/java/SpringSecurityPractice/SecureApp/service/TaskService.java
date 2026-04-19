@@ -7,6 +7,9 @@ import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
 import SpringSecurityPractice.SecureApp.errorhandle.exceptions.TaskNotFoundException;
 import SpringSecurityPractice.SecureApp.repo.TaskRepo;
 import SpringSecurityPractice.SecureApp.repo.EmployeeRepo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,8 +46,9 @@ public class TaskService {
     }
 
 
-    public List<TaskResponse> findTasksWithUsernames() {
-        return taskRepo.findAllTasksWithUsernames();
+    public Page<TaskResponse> findTasksWithUsernames(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return taskRepo.findAllTasksWithUsernames(pageable);
     }
 
     public boolean deleteById(long id) {

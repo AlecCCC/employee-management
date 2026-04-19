@@ -2,6 +2,8 @@ package SpringSecurityPractice.SecureApp.repo;
 
 import SpringSecurityPractice.SecureApp.entity.Task;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,13 +15,14 @@ import java.util.List;
 @Repository
 public interface TaskRepo extends JpaRepository<Task, Long> {
 
-    @Query("SELECT new SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse(" +
+    @Query(value = "SELECT new SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse(" +
             "t.id, t.title, t.description, t.status, t.dueDate, " +
             "e1.username, e2.username) " +
             "FROM Task t " +
             "JOIN t.assigned_to e1 " +
-            "JOIN t.assigned_by e2")
-    List<TaskResponse> findAllTasksWithUsernames();
+            "JOIN t.assigned_by e2",
+            countQuery = "SELECT COUNT(t) FROM Task t")
+    Page<TaskResponse> findAllTasksWithUsernames(Pageable pageable);
 
 
     @Query("SELECT new SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse(" +
