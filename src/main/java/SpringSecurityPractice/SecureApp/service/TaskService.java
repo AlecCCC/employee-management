@@ -7,9 +7,11 @@ import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
 import SpringSecurityPractice.SecureApp.errorhandle.exceptions.TaskNotFoundException;
 import SpringSecurityPractice.SecureApp.repo.TaskRepo;
 import SpringSecurityPractice.SecureApp.repo.EmployeeRepo;
+import SpringSecurityPractice.SecureApp.specifications.TaskSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,6 +62,36 @@ public class TaskService {
     }
 
 
+
+
+    public Page<TaskResponse> findTasksFiltered(String status, String username, int page, int size) {
+
+        Specification<Task> specification = (root, query, builder) -> null;
+
+        if (status != null) {
+            specification = specification.and(TaskSpecification.byStatus(status));
+        }
+
+        if (username != null) {
+            specification = specification.and(TaskSpecification.byUsername(username));
+        }
+
+        Page<Task> tasks = taskRepo.findAll(specification, PageRequest.of(page, size));
+
+        // map Task to TaskResponse
+        return tasks.map(task -> new TaskResponse(
+                task.getId(),
+                task.getTitle(),
+                task.getDescription(),
+                task.getStatus(),
+                task.getDueDate(),
+                task.getAssigned_to().getUsername(),
+                task.getAssigned_by().getUsername()
+        ));
+    }
+
+
+    
     public TaskResponse getTaskById(Long id) {
         Task task = taskRepo.findById(id)
                 .orElseThrow(()-> new TaskNotFoundException(id));

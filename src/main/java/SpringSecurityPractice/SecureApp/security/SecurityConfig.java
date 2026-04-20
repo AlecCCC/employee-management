@@ -57,9 +57,11 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
+                .formLogin(Customizer.withDefaults())
+//                .sessionManagement(session -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/security-practice/register").permitAll()
                         .requestMatchers("/security-practice/login").permitAll()
@@ -70,7 +72,7 @@ public class SecurityConfig {
                         .requestMatchers("/security-practice/employees/{id}").authenticated()
                         .anyRequest().permitAll()
                 );
-                //.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+               // .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

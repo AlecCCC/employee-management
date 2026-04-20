@@ -42,7 +42,9 @@ public class TaskController {
     public ResponseEntity<Page<TaskResponse>> getTasksWithUsernames(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "10") int size) {
+            @RequestParam(required = false, defaultValue = "10") int size,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String username) {
 
         Employee loggedInEmployee = employeeService.findByUsername(userDetails.getUsername());
 
@@ -52,7 +54,7 @@ public class TaskController {
 
         }
 
-        return ResponseEntity.ok(taskService.findTasksWithUsernames(page, size));
+        return ResponseEntity.ok(taskService.findTasksFiltered(status, username, page, size));
     }
 
     @GetMapping("/task/{id}")
