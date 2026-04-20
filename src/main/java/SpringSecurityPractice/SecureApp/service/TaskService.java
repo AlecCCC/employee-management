@@ -8,6 +8,7 @@ import SpringSecurityPractice.SecureApp.errorhandle.exceptions.TaskNotFoundExcep
 import SpringSecurityPractice.SecureApp.repo.TaskRepo;
 import SpringSecurityPractice.SecureApp.repo.EmployeeRepo;
 import SpringSecurityPractice.SecureApp.specifications.TaskSpecification;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -63,7 +64,7 @@ public class TaskService {
 
 
 
-
+    @Transactional
     public Page<TaskResponse> findTasksFiltered(String status, String username, int page, int size) {
 
         Specification<Task> specification = (root, query, builder) -> null;
