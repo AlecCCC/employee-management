@@ -44,7 +44,8 @@ public class TaskController {
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false) String status,
-            @RequestParam(required = false) String username) {
+            @RequestParam(value="assignedto", required = false) String assigned_to,
+            @RequestParam(value="assignedby",required = false) String assigned_by) {
 
         Employee loggedInEmployee = employeeService.findByUsername(userDetails.getUsername());
 
@@ -54,7 +55,7 @@ public class TaskController {
 
         }
 
-        return ResponseEntity.ok(taskService.findTasksFiltered(status, username, page, size));
+        return ResponseEntity.ok(taskService.findTasksFiltered(status, assigned_to, assigned_by, page, size));
     }
 
     @GetMapping("/task/{id}")

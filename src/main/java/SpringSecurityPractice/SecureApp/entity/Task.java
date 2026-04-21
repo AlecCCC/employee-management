@@ -22,11 +22,11 @@ public class Task {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_to", nullable = false)
-    private Employee assigned_to;
+    private Employee assignedTo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_by", nullable = false)
-    private Employee assigned_by;
+    private Employee assignedBy;
 
     public Task() {
     }
@@ -63,20 +63,20 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    public Employee getAssigned_to() {
-        return assigned_to;
+    public Employee getAssignedTo() {
+        return assignedTo;
     }
 
-    public void setAssigned_to(Employee assigned_to) {
-        this.assigned_to = assigned_to;
+    public void setAssignedTo(Employee assignedTo) {
+        this.assignedTo = assignedTo;
     }
 
-    public Employee getAssigned_by() {
-        return assigned_by;
+    public Employee getAssignedBy() {
+        return assignedBy;
     }
 
-    public void setAssigned_by(Employee assigned_by) {
-        this.assigned_by = assigned_by;
+    public void setAssignedBy(Employee assignedBy) {
+        this.assignedBy = assignedBy;
     }
 
     public Long getId() {

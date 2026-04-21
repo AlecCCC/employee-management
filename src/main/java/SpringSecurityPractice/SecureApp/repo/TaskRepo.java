@@ -20,8 +20,8 @@ public interface TaskRepo extends JpaRepository<Task, Long>, JpaSpecificationExe
             "t.id, t.title, t.description, t.status, t.dueDate, " +
             "e1.username, e2.username) " +
             "FROM Task t " +
-            "JOIN t.assigned_to e1 " +
-            "JOIN t.assigned_by e2",
+            "JOIN t.assignedTo e1 " +
+            "JOIN t.assignedBy e2",
             countQuery = "SELECT COUNT(t) FROM Task t")
     Page<TaskResponse> findAllTasksWithUsernames(Pageable pageable);
 
@@ -30,8 +30,8 @@ public interface TaskRepo extends JpaRepository<Task, Long>, JpaSpecificationExe
             "t.id, t.title, t.description, t.status, t.dueDate, " +
             "e1.username, e2.username) " +
             "FROM Task t " +
-            "JOIN t.assigned_to e1 " +
-            "JOIN t.assigned_by e2 " +
+            "JOIN t.assignedTo e1 " +
+            "JOIN t.assignedBy e2 " +
             "WHERE e1.id = :employeeId")
     List<TaskResponse> findTasksAssignedToById(@Param("employeeId") Long employeeId);
 

@@ -15,8 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class TaskService {
 
@@ -38,8 +36,8 @@ public class TaskService {
 
         task.setTitle(taskRequest.getTitle());
         task.setDescription(taskRequest.getDescription());
-        task.setAssigned_to(assigned_to);
-        task.setAssigned_by(assigned_by);
+        task.setAssignedTo(assigned_to);
+        task.setAssignedBy(assigned_by);
         task.setDueDate(taskRequest.getDueDate());
         task.setStatus(taskRequest.getStatus());
 
@@ -65,7 +63,11 @@ public class TaskService {
 
 
     @Transactional
-    public Page<TaskResponse> findTasksFiltered(String status, String username, int page, int size) {
+    public Page<TaskResponse> findTasksFiltered(String status, String assigned_to, String assigned_by, int page, int size) {
+
+        System.out.println("Controller received - status: " + status);
+        System.out.println("Controller received - assigned_to: " + assigned_to);
+        System.out.println("Controller received - assigned_by: " + assigned_by);
 
         Specification<Task> specification = (root, query, builder) -> null;
 
@@ -73,8 +75,12 @@ public class TaskService {
             specification = specification.and(TaskSpecification.byStatus(status));
         }
 
-        if (username != null) {
-            specification = specification.and(TaskSpecification.byUsername(username));
+        if (assigned_to != null) {
+            specification = specification.and(TaskSpecification.byAssignedToUsername(assigned_to));
+        }
+
+        if (assigned_by != null) {
+            specification = specification.and(TaskSpecification.byAssignedByUsername(assigned_by));
         }
 
         Page<Task> tasks = taskRepo.findAll(specification, PageRequest.of(page, size));
@@ -86,8 +92,8 @@ public class TaskService {
                 task.getDescription(),
                 task.getStatus(),
                 task.getDueDate(),
-                task.getAssigned_to().getUsername(),
-                task.getAssigned_by().getUsername()
+                task.getAssignedTo().getUsername(),
+                task.getAssignedBy().getUsername()
         ));
     }
 
@@ -103,8 +109,8 @@ public class TaskService {
                 task.getDescription(),
                 task.getStatus(),
                 task.getDueDate(),
-                task.getAssigned_to().getUsername(),
-                task.getAssigned_by().getUsername()
+                task.getAssignedTo().getUsername(),
+                task.getAssignedBy().getUsername()
         );
 
     }
@@ -142,8 +148,8 @@ public class TaskService {
         task.setDescription(taskRequest.getDescription());
         task.setStatus(taskRequest.getStatus());
         task.setDueDate(taskRequest.getDueDate());
-        task.setAssigned_by(assignedBy);
-        task.setAssigned_to(assignedTo);
+        task.setAssignedBy(assignedBy);
+        task.setAssignedTo(assignedTo);
 
         return taskRepo.save(task);
     }
