@@ -56,9 +56,45 @@ public class UserServiceTest {
     }
 
     @Test
-    void findByUsername_shouldReturnEmployee_whenEmployeeExists() {
+    void registerUser_shouldThrowEmailExistsException_whenEmailExists() {
 
-        // ARRANGE
+        RegisterRequest request = new RegisterRequest();
+        request.setUsername("jdoe");
+        request.setEmail("jdoe@example.com");
+        request.setPassword("password");
+        request.setFirstName("John");
+        request.setLastName("Doe");
+
+        when(userRepo.existsByEmail("jdoe@example.com")).thenReturn(true);
+
+        assertThrows(EmailExistsException.class, () -> {
+            userService.registerUser(request);
+        });
+
+        verify(userRepo, never()).save(any());
+    }
+
+    @Test
+    void registerUser_shouldSaveEmployee_whenValidRequest() {
+
+        RegisterRequest request = new RegisterRequest();
+        request.setUsername("jdoe");
+        request.setEmail("jdoe@example.com");
+        request.setPassword("password");
+        request.setFirstName("John");
+        request.setLastName("Doe");
+
+        when(userRepo.existsByEmail("jdoe@example.com")).thenReturn(false);
+        when(userRepo.existsByUsername("jdoe")).thenReturn(false);
+        when(passwordEncoder.encode("password")).thenReturn("hashedpassword");
+
+        userService.registerUser(request);
+
+        verify(userRepo, times(1)).save(any(Employee.class));
+    }
+
+    @Test
+    void findByUsername_shouldReturnEmployee_whenEmployeeExists() {
         Employee employee = new Employee();
         employee.setUsername("jdoe");
         employee.setEmail("jdoe@example.com");
