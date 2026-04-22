@@ -1,6 +1,7 @@
 package SpringSecurityPractice.SecureApp.errorhandle;
 
 import SpringSecurityPractice.SecureApp.errorhandle.exceptions.EmailExistsException;
+import SpringSecurityPractice.SecureApp.errorhandle.exceptions.EmployeeNotFoundException;
 import SpringSecurityPractice.SecureApp.errorhandle.exceptions.TaskNotFoundException;
 import SpringSecurityPractice.SecureApp.errorhandle.exceptions.UsernameExistsException;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,12 @@ public class GlobalExceptionHandle {
     @ExceptionHandler(EmailExistsException.class)
     public ResponseEntity<ErrorDetails> handleEmailExistsException(EmailExistsException emailExistsException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDetails(409, "Conflict", emailExistsException.getMessage()));
+    }
+
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleEmployeeNotFoundException(EmployeeNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorDetails(404, "Not Found", ex.getMessage()));
     }
 
 

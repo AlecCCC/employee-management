@@ -1,6 +1,7 @@
 package SpringSecurityPractice.SecureApp.repo;
 
 import SpringSecurityPractice.SecureApp.entity.Employee;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface EmployeeRepo extends JpaRepository<Employee, Long> {
+public interface EmployeeRepo extends JpaRepository<Employee, Long>, Specification<Employee> {
 
     Optional<Employee> findByUsername(String username);
 

@@ -5,6 +5,7 @@ import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.EmployeeResponse;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
 import SpringSecurityPractice.SecureApp.errorhandle.exceptions.EmailExistsException;
+import SpringSecurityPractice.SecureApp.errorhandle.exceptions.EmployeeNotFoundException;
 import SpringSecurityPractice.SecureApp.errorhandle.exceptions.UsernameExistsException;
 import SpringSecurityPractice.SecureApp.repo.EmployeeRepo;
 import SpringSecurityPractice.SecureApp.repo.TaskRepo;
@@ -29,7 +30,12 @@ public class EmployeeService {
 
     public Employee findByUsername(String username) {
         return userRepo.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new EmployeeNotFoundException(username));
+    }
+
+    public Employee findById(Long id) {
+        return userRepo.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException(id.toString()));
     }
 
     public void registerUser(RegisterRequest request) {
@@ -80,7 +86,7 @@ public class EmployeeService {
 
     public EmployeeResponse getEmployeeWithTask(Long id) {
 
-        Employee employee = userRepo.findById(id).orElseThrow(() -> new RuntimeException("Employee with Id of " + id + " not found"));
+        Employee employee = userRepo.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
 
         List<TaskResponse> tasks = taskRepo.findTasksAssignedToById(id);
 
