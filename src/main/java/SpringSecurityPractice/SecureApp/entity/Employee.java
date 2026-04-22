@@ -1,6 +1,9 @@
 package SpringSecurityPractice.SecureApp.entity;
 
+import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name="employee")
@@ -33,6 +36,9 @@ public class Employee {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+    }
+
+    public Employee(Long id, String username, String authority, String firstName, String lastName, String email, List<TaskResponse> tasksAssignedToById) {
     }
 
     public Long getId() {

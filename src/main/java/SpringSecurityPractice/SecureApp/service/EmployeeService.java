@@ -1,6 +1,7 @@
 package SpringSecurityPractice.SecureApp.service;
 
 import SpringSecurityPractice.SecureApp.entity.Employee;
+import SpringSecurityPractice.SecureApp.entity.Task;
 import SpringSecurityPractice.SecureApp.entity.requestEntity.RegisterRequest;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.EmployeeResponse;
 import SpringSecurityPractice.SecureApp.entity.responseEntity.TaskResponse;
@@ -9,6 +10,11 @@ import SpringSecurityPractice.SecureApp.errorhandle.exceptions.EmployeeNotFoundE
 import SpringSecurityPractice.SecureApp.errorhandle.exceptions.UsernameExistsException;
 import SpringSecurityPractice.SecureApp.repo.EmployeeRepo;
 import SpringSecurityPractice.SecureApp.repo.TaskRepo;
+import SpringSecurityPractice.SecureApp.specifications.EmployeeSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -101,5 +107,26 @@ public class EmployeeService {
         );
 
     }
+
+public Page<EmployeeResponse> findAllFiltered(String authority, int page, int size) {
+
+    Specification<Employee> specification = (root, query, builder) -> null;
+
+    if (authority != null && !authority.isBlank()) {
+        specification = specification.and(EmployeeSpecification.byAuthority(authority));
+    }
+
+    Page<Employee> employees = userRepo.findAll(specification, PageRequest.of(page, size));
+
+    return employees.map(employee -> new EmployeeResponse(
+            employee.getId(),
+            employee.getUsername(),
+            employee.getAuthority(),
+            employee.getFirstName(),
+            employee.getLastName(),
+            employee.getEmail(),
+            taskRepo.findTasksAssignedToById(employee.getId())
+    ));
+}
 
 }
