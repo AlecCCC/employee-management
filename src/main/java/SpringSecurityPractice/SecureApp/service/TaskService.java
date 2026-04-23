@@ -97,8 +97,22 @@ public class TaskService {
         ));
     }
 
+    public Page<TaskResponse> findOverdueTasks(int page, int size) {
 
-    
+        Specification<Task> specification = Specification.where(TaskSpecification.isOverdueAndTodo());
+        Page<Task> tasks = taskRepo.findAll(specification, PageRequest.of(page, size));
+
+        return tasks.map(task -> new TaskResponse(
+                task.getId(),
+                task.getTitle(),
+                task.getDescription(),
+                task.getStatus(),
+                task.getDueDate(),
+                task.getAssignedTo().getUsername(),
+                task.getAssignedBy().getUsername()
+        ));
+    }
+
     public TaskResponse getTaskById(Long id) {
         Task task = taskRepo.findById(id)
                 .orElseThrow(()-> new TaskNotFoundException(id));

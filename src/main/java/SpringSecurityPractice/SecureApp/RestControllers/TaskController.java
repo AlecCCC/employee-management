@@ -58,6 +58,21 @@ public class TaskController {
         return ResponseEntity.ok(taskService.findTasksFiltered(status, assigned_to, assigned_by, page, size));
     }
 
+    @GetMapping("/tasks/overdue")
+    public ResponseEntity<Page<TaskResponse>> getOverdueTasks(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Employee loggedInEmployee = employeeService.findByUsername(userDetails.getUsername());
+
+        if (!loggedInEmployee.getAuthority().equals("ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        return ResponseEntity.ok(taskService.findOverdueTasks(page, size));
+    }
+
     @GetMapping("/task/{id}")
     public ResponseEntity<TaskResponse> getTaskById(@PathVariable Long id,
                                                     @AuthenticationPrincipal UserDetails userDetails) {

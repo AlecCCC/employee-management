@@ -69,6 +69,7 @@ public class SecurityConfig {
                         .requestMatchers("/security-practice/task/{id}").authenticated()
                         .requestMatchers("/security-practice/hello").authenticated()
                         .requestMatchers("/security-practice/employees").hasAuthority("ADMIN")
+                        .requestMatchers("/security-practice/task/overdue").hasAuthority("ADMIN")
                         .requestMatchers("/security-practice/employees/{id}").authenticated()
                         .anyRequest().permitAll()
                 );

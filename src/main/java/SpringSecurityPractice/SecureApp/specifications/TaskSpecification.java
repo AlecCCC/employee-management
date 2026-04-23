@@ -2,6 +2,7 @@ package SpringSecurityPractice.SecureApp.specifications;
 
 import SpringSecurityPractice.SecureApp.entity.Task;
 import org.springframework.data.jpa.domain.Specification;
+import java.time.LocalDate;
 
 public class TaskSpecification {
 
@@ -29,6 +30,14 @@ public class TaskSpecification {
                 builder.upper(root.get("assignedBy").get("username")), assigned_by.toUpperCase()
         );
 
+    }
+
+
+    public static Specification<Task> isOverdueAndTodo() {
+        return (root, query, builder) -> builder.and(
+                builder.lessThan(root.get("dueDate"), LocalDate.now()),
+                builder.equal(builder.upper(root.get("status")), "TODO")
+        );
     }
 
 }
