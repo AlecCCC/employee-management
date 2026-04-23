@@ -32,8 +32,8 @@ public class TaskController {
 
 
     @PostMapping("/task")
-    public ResponseEntity<Task> saveTask(@RequestBody TaskRequest request) {
-        Task task = taskService.createTask(request);
+    public ResponseEntity<TaskResponse> saveTask(@RequestBody TaskRequest request) {
+        TaskResponse task = taskService.createTask(request);
         return ResponseEntity.ok(task);
 
     }
