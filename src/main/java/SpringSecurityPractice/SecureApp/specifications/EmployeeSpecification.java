@@ -14,4 +14,12 @@ public class EmployeeSpecification {
                 builder.equal(builder.upper(root.get("authority")), authority.toUpperCase());
     }
 
+    public static Specification<Employee> byUsername(String username) {
+        if (username == null || username.isBlank()) {
+            return null;
+        }
+        return (root, query, builder) ->
+                builder.equal(builder.upper(root.get("username")), username.toUpperCase());
+    }
+
 }

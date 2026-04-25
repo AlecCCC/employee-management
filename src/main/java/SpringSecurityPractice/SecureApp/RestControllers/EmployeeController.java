@@ -27,9 +27,10 @@ public class EmployeeController {
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
-            @RequestParam(value = "authority", required = false) String authority) {
+            @RequestParam(value = "authority", required = false) String authority,
+            @RequestParam(value = "username", required = false) String username) {
 
-        return ResponseEntity.ok(employeeService.findAllFiltered(authority, page, size));
+        return ResponseEntity.ok(employeeService.findAllFiltered(authority, username, page, size));
     }
 
     @GetMapping("/employees/{id}")

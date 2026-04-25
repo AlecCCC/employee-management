@@ -108,12 +108,16 @@ public class EmployeeService {
 
     }
 
-public Page<EmployeeResponse> findAllFiltered(String authority, int page, int size) {
+public Page<EmployeeResponse> findAllFiltered(String authority, String username, int page, int size) {
 
     Specification<Employee> specification = (root, query, builder) -> null;
 
     if (authority != null && !authority.isBlank()) {
         specification = specification.and(EmployeeSpecification.byAuthority(authority));
+    }
+
+    if (username != null && !username.isBlank()) {
+        specification = specification.and(EmployeeSpecification.byUsername(username));
     }
 
     Page<Employee> employees = userRepo.findAll(specification, PageRequest.of(page, size));
